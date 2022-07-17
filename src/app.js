@@ -4,6 +4,7 @@ export class App {
 
     this.#listenAuthButton()
     this.#listenGetFriendsButton()
+    this.#listenRemoveCacheButton()
     this.#listenShowListButton()
     this.#listenShowStatsButton()
     this.#renderFields()
@@ -17,6 +18,11 @@ export class App {
   #listenShowListButton() {
     const btn = document.querySelector('#show-list')
     btn.addEventListener('click', () => this.controller.showList())
+  }
+
+  #listenRemoveCacheButton() {
+    const btn = document.querySelector('#clean-cache')
+    btn.addEventListener('click', () => this.controller.cleanCache())
   }
 
   #listenShowStatsButton() {

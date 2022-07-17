@@ -2,9 +2,11 @@ import { withTimeout } from '../utils/timeout.js'
 import { Friend } from './friend.js'
 
 export class Friends {
-  constructor (api) {
+  #byId = new Map()
+
+  constructor (api, storage) {
     this.api = api
-    this.byId = new Map();
+    this.storage = storage
   }
 
   async getFriends(userId, friendsCount, fields) {
@@ -13,11 +15,17 @@ export class Friends {
       count: friendsCount,
       fields
     }))
+
     const converted = this.#convert(response)
 
-    converted.forEach((friend) => {
-      this.byId.set(friend.id, friend)
-    })
+    for (const friend of converted) {
+      try {
+        this.#byId.set(friend.id, friend)
+        await this.storage.add(friend)
+      } catch (e) {
+
+      }
+    }
 
     return converted
   }
@@ -25,8 +33,14 @@ export class Friends {
   #convert({ items }) {
     return items.map(item => new Friend(item))
   }
-}
 
-export class FriendsProxy {
-  constructor () {}
+  get byId() {
+    return this.#byId
+  }
+
+  set byId(friends) {
+    friends?.forEach((friend) => {
+      this.#byId.set(friend.id, friend)
+    })
+  }
 }

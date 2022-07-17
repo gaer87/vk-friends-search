@@ -91,9 +91,11 @@ export class FriendsGraphProxy {
     localStorage: 'localStorage',
     memory: 'memory',
   }
+
+  static destroy() {}
 }
 
-class FriendsGraphProxyLocalStorage extends FriendsGraphProxy {
+export class FriendsGraphProxyLocalStorage extends FriendsGraphProxy {
   async buildFriendsGraph(...args) {
     if (localStorage.getItem(GRAPH_STORAGE_KEY)) {
       return JSON.parse(localStorage.getItem(GRAPH_STORAGE_KEY))
@@ -108,6 +110,10 @@ class FriendsGraphProxyLocalStorage extends FriendsGraphProxy {
     }
 
     return graph
+  }
+
+  static destroy() {
+    localStorage.removeItem(GRAPH_STORAGE_KEY)
   }
 }
 
