@@ -1,0 +1,1 @@
+export const prepareToCompare = (value) => value?.trim().toLowerCase()

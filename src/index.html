@@ -1,0 +1,55 @@
+<!doctype html>
+<html class="no-js" lang="">
+
+<head>
+  <meta charset="utf-8">
+  <title>VK Friends Search (MVP)</title>
+  <meta name="description" content="">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link href="./styles.css" type="text/css" rel="stylesheet">
+
+  <script src="https://vk.com/js/api/openapi.js?169" type="text/javascript"></script>
+
+  <script type="module" src="./index.js"></script>
+</head>
+
+<body>
+
+<header class="head">
+  <h1>VK Friends Search (MVP)</h1>
+  <button id="auth">Get my token</button>
+</header>
+
+<main class="main">
+  <section class="request-counts">
+    <input id="friends-count" type="number" min="1" placeholder="Friend's count &hellip;">
+    <input id="requests-count" type="number" value="100" min="1" placeholder="Request's count &hellip;">
+  </section>
+
+  <section class="panel">
+    <span id="fields-cont"></span>
+    <input id="value" placeholder="Value &hellip;">
+    <button id="get-friends">Search in width!</button>
+    <button id="show-stats">Show stats</button>
+    <button id="show-list">Show list</button>
+  </section>
+
+  <section>
+    <header><h2>Search result</h2></header>
+    <div id="content"></div>
+  </section>
+
+  <section>
+    <header><h2>Stats</h2></header>
+    <div id="stats"></div>
+  </section>
+
+  <section>
+    <header><h2>List</h2></header>
+    <div id="list"></div>
+  </section>
+</main>
+
+</body>
+
+</html>
