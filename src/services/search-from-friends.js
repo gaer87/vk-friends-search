@@ -15,13 +15,6 @@ export class SearchFromFriends {
 
     let res
 
-    const parents = {}
-
-    const myFriends = this.graph[userId]
-    myFriends.forEach((myFriendId) => {
-      parents[myFriendId] = userId
-    })
-
     while (searchQueue.length) {
       const friendId = searchQueue.shift()
 
@@ -36,35 +29,14 @@ export class SearchFromFriends {
         const friends = this.graph[friendId]
         friends && searchQueue.push(...friends)
 
-        friends?.forEach((itemId) => {
-          // TODO: сделать пути для всех друзей, а не только первого
-          if (!parents[itemId] && itemId !== userId) {
-            parents[itemId] = friendId
-          }
-        })
-
         searched.add(friendId)
       }
     }
 
-    const pathIds = []
-    let pathRes = res
-
-    while (pathRes) {
-      pathIds.unshift(pathRes)
-      pathRes = parents[pathRes]
-    }
-
-    return {
-      friendId: res,
-      pathIds,
-    }
+    return res
   }
 
-  enrichFriends({ friendId, pathIds }) {
-    const friend = this.friends.byId.get(friendId) ?? Friend.createRoot()
-    const path = pathIds.map(pathId => this.friends.byId.get(pathId) ?? Friend.createRoot())
-
-    return { friend, path }
+  enrichFriends(friendId) {
+    return this.friends.byId.get(friendId) ?? Friend.createRoot()
   }
 }

@@ -57,17 +57,14 @@ export class App {
     cont.innerHTML = `<select id="fields">${options}</select>`
   }
 
-  renderFriend(field, { friend, path }) {
+  renderFriend(field, friend) {
     const cont = document.querySelector('#content')
 
     if (friend) {
-      let res = `<p><b>${field}</b>: ${friend[field]}</p>`
-      res += path
-        // .slice(1)
-        .map(({ id, firstName, lastName}) => {
-          return `<a href="https://vk.com/id${id}" target="_blank">${lastName} ${firstName}</a>`
-        })
-        .join(' > ')
+      let res = (`
+        <p><b>${field}</b>: ${friend[field]}</p>
+        <p><a href="https://vk.com/id${friend.id}" target="_blank">${friend.lastName} ${friend.firstName}</a></p>
+      `)
 
       cont.innerHTML = res
     } else {
