@@ -16,21 +16,26 @@ export class Friends {
       fields
     }))
 
-    const converted = this.#convert(response)
+    const filtered = this.#filter(response.items)
+    const converted = this.#convert(filtered)
 
     for (const friend of converted) {
       try {
         this.#byId.set(friend.id, friend)
         await this.storage.add(friend)
       } catch (e) {
-        console.log(e)
+        console.warn(e)
       }
     }
 
     return converted
   }
 
-  #convert({ items }) {
+  #filter(items) {
+    return items.filter(item => !(item.is_closed && !item.can_access_closed))
+  }
+
+  #convert(items) {
     return items.map(item => new Friend(item))
   }
 
