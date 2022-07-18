@@ -23,7 +23,7 @@ export class Friends {
         this.#byId.set(friend.id, friend)
         await this.storage.add(friend)
       } catch (e) {
-
+        console.log(e)
       }
     }
 

@@ -22,7 +22,8 @@ export class SearchFromFriends {
         continue
       }
 
-      if (prepareToCompare(this.friends.byId.get(friendId)[prop]) === prepareToCompare(value)) {
+      // Почему-то иногда friendId - undefined
+      if (prepareToCompare(this.friends.byId.get(friendId)?.[prop]) === prepareToCompare(value)) {
         res = friendId
         break
       } else {
@@ -37,6 +38,9 @@ export class SearchFromFriends {
   }
 
   enrichFriends(friendId) {
-    return this.friends.byId.get(friendId) ?? Friend.createRoot()
+    if (!friendId) {
+      return
+    }
+    return this.friends.byId.get(friendId)
   }
 }
