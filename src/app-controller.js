@@ -2,6 +2,7 @@ import { MY_ID } from './consts.js'
 import { App } from './app.js'
 import { FriendsGraphProxy, FriendsGraphProxyLocalStorage } from './services/friends-graph.js'
 import { SearchFromFriends } from './services/search-from-friends.js'
+import { Stats } from './services/stats.js'
 import { Friends } from './models/friends.js'
 import { Storage } from './storage.js'
 
@@ -48,18 +49,25 @@ export class AppController {
   }
 
   showStats(field) {
-    // TODO: сделать сервис статы
-    const counter = {}
+    const stats = new Stats(this.friends)
 
-    for (const item of this.friends.byId.values()) {
-      if (item[field]) {
-        counter[item[field]] = counter[item[field]] ? counter[item[field]] + 1 : 1
-      }
-    }
-
-    const res = Object.entries(counter)
-      .sort((a, b) => b[1] - a[1])
+    const res = stats.calcBy(field)
 
     this.view.renderStats(res)
+  }
+
+  async searchByField(field, value, friendsCount, requestsCount) {
+    const friendsGraphService = FriendsGraphProxy.create(FriendsGraphProxy.type.localStorage, this.friends)
+    const graph = await friendsGraphService.buildFriendsGraph(MY_ID, friendsCount, parseInt(requestsCount))
+
+    if (!Object.keys(graph).length) {
+      this.view.renderError()
+      return
+    }
+
+    const searchFromFriends = new SearchFromFriends(this.friends, graph)
+    const res = searchFromFriends.searchByField(field, value)
+
+    this.view.renderListByField(res)
   }
 }

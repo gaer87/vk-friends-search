@@ -118,11 +118,39 @@ export class App {
 
     let res = counterEntries.map(([key, counter]) => `
       <li>  
-        ${key} - ${counter}
+        <a href="#" data-value="${key}">${key}</a> - ${counter}
       </li>
     `)
 
     cont.innerHTML = `<ul>${res.join('')}</ul>`
+
+    cont.addEventListener('click', (ev) => {
+      const field = document.querySelector('#fields').value
+      const value = ev.target.dataset.value
+
+      const friendsCount = document.querySelector('#friends-count')
+      const friendsCountValue = friendsCount.value
+
+      const requestsCount = document.querySelector('#requests-count')
+      const requestsCountValue = requestsCount.value
+
+      requestAnimationFrame(() => this.controller.searchByField(field, value, friendsCountValue, requestsCountValue))
+    })
+  }
+
+  renderListByField(list) {
+    const cont = document.querySelector('#show-list-by-stats')
+
+    let res = list.map((item) => `
+      <tr>
+        <td><a href="https://vk.com/id${item.id}" target="_blank">${item.lastName} ${item.firstName} (${item.domain ?? ''})</a></td>
+        <td>${item.bdate ?? ''}</td>
+        <td>${item.country ?? ''}</td>
+        <td>${item.city ?? ''}</td>
+      </tr>
+    `)
+
+    cont.innerHTML = `<table>${res.join('')}</table>`
   }
 }
 

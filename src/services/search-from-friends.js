@@ -43,4 +43,10 @@ export class SearchFromFriends {
     }
     return this.friends.byId.get(friendId)
   }
+
+  searchByField(field, value) {
+    return Array.from(this.friends.byId.values()).filter(friend => {
+      return prepareToCompare(friend[field]) === prepareToCompare(value)
+    })
+  }
 }
