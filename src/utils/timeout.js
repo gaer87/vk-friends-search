@@ -1,6 +1,6 @@
-export const timeout = () => {
+export const timeout = (delay = 5000) => {
   return new Promise(resolve => {
-    setTimeout(resolve, Math.random() * 1000)
+    setTimeout(resolve, delay || Math.random() * 1000)
   })
 }
 

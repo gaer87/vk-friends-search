@@ -1,8 +1,9 @@
 import { MY_ID } from './consts.js'
 import { App } from './app.js'
+import { timeout } from './utils/timeout.js'
 import { FriendsGraphProxy, FriendsGraphProxyLocalStorage } from './services/friends-graph.js'
 import { SearchFromFriends } from './services/search-from-friends.js'
-import { Stats } from './services/stats.js'
+import { MapReduceStats, Stats } from './services/stats/stats.js'
 import { Friends } from './models/friends.js'
 import { Storage } from './storage.js'
 
@@ -48,12 +49,20 @@ export class AppController {
     this.view.renderList(Array.from(this.friends.byId.values()))
   }
 
-  showStats(field) {
-    const stats = new Stats(this.friends)
+  async showStats(field) {
+    const simpleStats = new Stats(this.friends)
+    console.time('simpleStats')
+    const simpleRes = simpleStats.calcBy(field)
+    console.timeEnd('simpleStats')
 
-    const res = stats.calcBy(field)
+    const stats = new MapReduceStats(this.friends)
+    await timeout()
 
-    this.view.renderStats(res)
+    console.time('stats')
+    const res = await stats.calcBy(field)
+    console.timeEnd('stats')
+
+    // this.view.renderStats(res)
   }
 
   async searchByField(field, value, friendsCount, requestsCount) {
