@@ -15,6 +15,8 @@ export class AppController {
     this.storage = new Storage('friends')
     this.friends = new Friends(this.api, this.storage)
 
+    this.mapReduceStats = new MapReduceStats(10, this.friends)
+
     this.build()
   }
 
@@ -55,11 +57,8 @@ export class AppController {
     const simpleRes = simpleStats.calcBy(field)
     console.timeEnd('simpleStats')
 
-    const stats = new MapReduceStats(this.friends)
-    await timeout()
-
     console.time('stats')
-    const res = await stats.calcBy(field)
+    const res = await this.mapReduceStats.calcBy(field)
     console.timeEnd('stats')
 
     // this.view.renderStats(res)
