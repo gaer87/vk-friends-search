@@ -117,5 +117,7 @@ export class MapReduceStats {
 
     // console.log((res))
     console.log(Object.fromEntries(res))
+
+    return res
   }
 }

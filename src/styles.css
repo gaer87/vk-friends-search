@@ -22,10 +22,16 @@
     left: 0;
     background: silver;
 
-    animation-name: move;
-    animation-duration: 3s;
+    visibility: hidden;
+
+    animation-duration: 1s;
     animation-iteration-count: infinite;
     animation-timing-function: linear;
+}
+
+.bar.show {
+    animation-name: move;
+    visibility: visible;
 }
 
 @keyframes move {

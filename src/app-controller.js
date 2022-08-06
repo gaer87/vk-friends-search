@@ -61,7 +61,7 @@ export class AppController {
     const res = await this.mapReduceStats.calcBy(field)
     console.timeEnd('stats')
 
-    // this.view.renderStats(res)
+    this.view.renderStats(res)
   }
 
   async searchByField(field, value, friendsCount, requestsCount) {

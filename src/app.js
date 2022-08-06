@@ -27,9 +27,11 @@ export class App {
 
   #listenShowStatsButton() {
     const btn = document.querySelector('#show-stats')
-    btn.addEventListener('click', () => {
+    btn.addEventListener('click', async () => {
       const field = document.querySelector('#fields').value
-      this.controller.showStats(field)
+      this.#toggleBar(true)
+      await this.controller.showStats(field)
+      this.#toggleBar(false)
     })
   }
 
@@ -51,6 +53,14 @@ export class App {
 
       requestAnimationFrame(() => this.controller.searchFriend(field, value, friendsCountValue, requestsCountValue))
     })
+  }
+
+  #toggleBar(show) {
+    const bar = document.querySelector('.bar')
+
+    show
+      ? bar.classList.add('show')
+      : bar.classList.remove('show')
   }
 
   #renderFields() {
