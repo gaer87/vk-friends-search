@@ -1,3 +1,9 @@
+const increaseData = (data, count = 150) => {
+  return new Array(count).fill(data).reduce((acc, cur) => {
+    return acc.concat(cur)
+  }, [])
+}
+
 export class Stats {
   constructor (friends) {
     this.friends = friends
@@ -6,7 +12,11 @@ export class Stats {
   calcBy(field) {
     const counter = {}
 
-    for (const item of this.friends.byId.values()) {
+    let values = Array.from(this.friends.byId.values())
+    // X
+    values = increaseData(values)
+
+    for (const item of values) {
       if (item.hasOwnProperty(field)) {
         counter[item[field]] = counter[item[field]] ? counter[item[field]] + 1 : 1
       }
@@ -38,7 +48,9 @@ export class MapReduceStats {
     const countInBatch = Math.ceil(size / countNodes)
 
     const batchesFriends = []
-    const values = Array.from(this.friends.byId.values())
+    let values = Array.from(this.friends.byId.values())
+    // X
+    values = increaseData(values)
 
     for (let i = 0; i < countNodes; i++) {
       const slice = values.slice(i * countInBatch, (i + 1) * countInBatch)
